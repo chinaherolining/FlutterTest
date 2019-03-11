@@ -62,12 +62,12 @@ class _HomePageState extends State<HomePage>{
 
       Response response;
       var data = {'name':TypeText};
-      response = await Dio().post("https://www.easy-mock.com/mock/5c8287df98a1ca19efdafa29/example/post_dabaojian",
-        queryParameters: data
-      );
-//      response = await Dio().get("https://www.easy-mock.com/mock/5c60131a4bed3a6342711498/baixing/dabaojian",
+//      response = await Dio().post("https://www.easy-mock.com/mock/5c8287df98a1ca19efdafa29/example/post_dabaojian",
 //        queryParameters: data
 //      );
+      response = await Dio().get("https://www.easy-mock.com/mock/5c60131a4bed3a6342711498/baixing/dabaojian",
+        queryParameters: data
+      );
       return response.data;
     }catch(e){
       return print(e);
