@@ -56,7 +56,7 @@ class _IndextPageState extends State<IndexPage>{
             });
           },
       ),
-      appBar: AppBar(title:Text('百姓生活+')),
+//      appBar: AppBar(title:Text('百姓生活+')),
       body:currentPage,
     );
   }
