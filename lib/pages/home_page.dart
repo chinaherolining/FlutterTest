@@ -3,6 +3,7 @@ import '../service/service_method.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'dart:convert';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'widget/AdBanner.dart';
 
 class HomePage extends StatefulWidget{
   _HomePageState createState() => _HomePageState();
@@ -22,10 +23,13 @@ class _HomePageState extends State<HomePage>{
               var data = json.decode(snapshot.data.toString());
               List<Map> swiper = (data['data']['slides'] as List).cast();
               List<Map> navigatorList = (data['data']['category'] as List).cast();
+              String adPicture = data['data']['advertesPicture']['PICTURE_ADDRESS'];
+
               return Column(
                 children: <Widget>[
                   SwiperDiy(swiperDateList: swiper),
                   TopNavigator(navigatorList:navigatorList),
+                  AdBanner(adPicture: adPicture),
                 ],
               );
             }else{
