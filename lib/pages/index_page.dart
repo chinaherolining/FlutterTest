@@ -4,6 +4,7 @@ import 'home_page.dart';
 import 'category_page.dart';
 import 'cart_page.dart';
 import 'member_page.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class IndexPage extends StatefulWidget {
   _IndextPageState createState()=>_IndextPageState();
@@ -43,6 +44,7 @@ class _IndextPageState extends State<IndexPage>{
   }
   @override
   Widget build(BuildContext context){
+    ScreenUtil.instance = ScreenUtil(width: 720,height: 1208)..init(context);
     return Scaffold(
       backgroundColor: Color.fromRGBO(244, 245, 245, 1.0),
       bottomNavigationBar: BottomNavigationBar(
