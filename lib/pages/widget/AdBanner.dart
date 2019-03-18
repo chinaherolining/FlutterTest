@@ -3,6 +3,7 @@ import '../../service/service_method.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'dart:convert';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+//广告区域
 class AdBanner extends StatelessWidget {
   final String adPicture;
   AdBanner({Key key,this.adPicture}):super(key:key);

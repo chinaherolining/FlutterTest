@@ -4,6 +4,7 @@ import 'package:flutter_swiper/flutter_swiper.dart';
 import 'dart:convert';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'widget/AdBanner.dart';
+import 'widget/LeaderPhone.dart';
 
 class HomePage extends StatefulWidget{
   _HomePageState createState() => _HomePageState();
@@ -15,29 +16,34 @@ class _HomePageState extends State<HomePage>{
   Widget build(BuildContext context){
     return Scaffold(
       appBar: AppBar(title:Text('百姓生活+')),
-      body: FutureBuilder(
-          future: getHomePageContent(),
-          builder: (context,snapshot){
-            if(snapshot.hasData){
-              //处理数据
-              var data = json.decode(snapshot.data.toString());
-              List<Map> swiper = (data['data']['slides'] as List).cast();
-              List<Map> navigatorList = (data['data']['category'] as List).cast();
-              String adPicture = data['data']['advertesPicture']['PICTURE_ADDRESS'];
+      body:SingleChildScrollView(
+        child:FutureBuilder(
+            future: getHomePageContent(),
+            builder: (context,snapshot){
+              if(snapshot.hasData){
+                //处理数据
+                var data = json.decode(snapshot.data.toString());
+                List<Map> swiper = (data['data']['slides'] as List).cast();
+                List<Map> navigatorList = (data['data']['category'] as List).cast();
+                String adPicture = data['data']['advertesPicture']['PICTURE_ADDRESS'];
+                String leaderImage = data['data']['shopInfo']['leaderImage'];
+                String leaderPhone = data['data']['shopInfo']['leaderPhone'];
 
-              return Column(
-                children: <Widget>[
-                  SwiperDiy(swiperDateList: swiper),
-                  TopNavigator(navigatorList:navigatorList),
-                  AdBanner(adPicture: adPicture),
-                ],
-              );
-            }else{
-              return Center(
-                child: Text('加载中。。。。。'),
-              );
-            }
-          }),
+                return Column(
+                  children: <Widget>[
+                    SwiperDiy(swiperDateList: swiper),
+                    TopNavigator(navigatorList:navigatorList),
+                    AdBanner(adPicture: adPicture),
+                    LeaderPhone(leaderImage: leaderImage,leaderPhone:leaderPhone),
+                  ],
+                );
+              }else{
+                return Center(
+                  child: Text('加载中。。。。。'),
+                );
+              }
+            }),
+      )
     );
   }
 
@@ -51,9 +57,9 @@ class SwiperDiy extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    print('设备宽度:${ScreenUtil.screenWidth}'); //Device width
-    print('设备高度:${ScreenUtil.screenHeight}'); //Device height
-    print('设备的像素密度:${ScreenUtil.pixelRatio}'); //Device pixel density
+//    print('设备宽度:${ScreenUtil.screenWidth}'); //Device width
+//    print('设备高度:${ScreenUtil.screenHeight}'); //Device height
+//    print('设备的像素密度:${ScreenUtil.pixelRatio}'); //Device pixel density
     return Container(
       height: ScreenUtil().setHeight(333),
       // ignore: argument_type_not_assignable
