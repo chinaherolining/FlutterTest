@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'widget/AdBanner.dart';
 import 'widget/LeaderPhone.dart';
+import 'widget/Recommend.dart';
 
 class HomePage extends StatefulWidget{
   _HomePageState createState() => _HomePageState();
@@ -16,8 +17,7 @@ class _HomePageState extends State<HomePage>{
   Widget build(BuildContext context){
     return Scaffold(
       appBar: AppBar(title:Text('百姓生活+')),
-      body:SingleChildScrollView(
-        child:FutureBuilder(
+      body:FutureBuilder(
             future: getHomePageContent(),
             builder: (context,snapshot){
               if(snapshot.hasData){
@@ -28,14 +28,18 @@ class _HomePageState extends State<HomePage>{
                 String adPicture = data['data']['advertesPicture']['PICTURE_ADDRESS'];
                 String leaderImage = data['data']['shopInfo']['leaderImage'];
                 String leaderPhone = data['data']['shopInfo']['leaderPhone'];
+                List<Map> recommendList = (data['data']['recommend'] as List).cast();
 
-                return Column(
+                return SingleChildScrollView(
+                    child:Column(
                   children: <Widget>[
                     SwiperDiy(swiperDateList: swiper),
                     TopNavigator(navigatorList:navigatorList),
                     AdBanner(adPicture: adPicture),
                     LeaderPhone(leaderImage: leaderImage,leaderPhone:leaderPhone),
+                    Recommend(recommendList:recommendList),
                   ],
+                  )
                 );
               }else{
                 return Center(
@@ -43,7 +47,6 @@ class _HomePageState extends State<HomePage>{
                 );
               }
             }),
-      )
     );
   }
 
