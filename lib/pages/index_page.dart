@@ -28,7 +28,7 @@ class _IndextPageState extends State<IndexPage>{
       title: Text('会员中心'),
     ),
   ];
-  final List tabBodies = [
+  final List<Widget> tabBodies = [
     HomePage(),
     CategoryPage(),
     CartPage(),
@@ -59,7 +59,10 @@ class _IndextPageState extends State<IndexPage>{
           },
       ),
 //      appBar: AppBar(title:Text('百姓生活+')),
-      body:currentPage,
+      body:IndexedStack(
+        index: currentIndex,
+        children: tabBodies,
+      ),
     );
   }
 }
