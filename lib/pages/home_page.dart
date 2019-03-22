@@ -6,6 +6,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'widget/AdBanner.dart';
 import 'widget/LeaderPhone.dart';
 import 'widget/Recommend.dart';
+import 'widget/FloorTitle.dart';
+import 'widget/FloorContent.dart';
 
 class HomePage extends StatefulWidget{
   _HomePageState createState() => _HomePageState();
@@ -39,6 +41,12 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
                 String leaderImage = data['data']['shopInfo']['leaderImage'];
                 String leaderPhone = data['data']['shopInfo']['leaderPhone'];
                 List<Map> recommendList = (data['data']['recommend'] as List).cast();
+                String floor1Title = data['data']['floor1Pic']['PICTURE_ADDRESS'];
+                String floor2Title = data['data']['floor2Pic']['PICTURE_ADDRESS'];
+                String floor3Title = data['data']['floor3Pic']['PICTURE_ADDRESS'];
+                List<Map> floor1 = (data['data']['floor1'] as List).cast();
+                List<Map> floor2 = (data['data']['floor2'] as List).cast();
+                List<Map> floor3 = (data['data']['floor3'] as List).cast();
 
                 return SingleChildScrollView(
                     child:Column(
@@ -48,6 +56,12 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
                     AdBanner(adPicture: adPicture),
                     LeaderPhone(leaderImage: leaderImage,leaderPhone:leaderPhone),
                     Recommend(recommendList:recommendList),
+                    FloorTitle(picture_address: floor1Title,),
+                    FloorContent(floorGoodsList:floor1),
+                    FloorTitle(picture_address: floor2Title,),
+                    FloorContent(floorGoodsList:floor2),
+                    FloorTitle(picture_address: floor3Title,),
+                    FloorContent(floorGoodsList:floor3),
                   ],
                   )
                 );
