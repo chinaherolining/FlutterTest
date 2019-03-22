@@ -8,6 +8,7 @@ import 'widget/LeaderPhone.dart';
 import 'widget/Recommend.dart';
 import 'widget/FloorTitle.dart';
 import 'widget/FloorContent.dart';
+import 'widget/HotGoods.dart';
 
 class HomePage extends StatefulWidget{
   _HomePageState createState() => _HomePageState();
@@ -27,10 +28,11 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
 
   @override
   Widget build(BuildContext context){
+    var formData = {'lon':'115.02932','lat':'35.76189'};
     return Scaffold(
       appBar: AppBar(title:Text('百姓生活+')),
       body:FutureBuilder(
-            future: getHomePageContent(),
+            future: request('homePageContent', formData),
             builder: (context,snapshot){
               if(snapshot.hasData){
                 //处理数据
@@ -62,6 +64,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
                     FloorContent(floorGoodsList:floor2),
                     FloorTitle(picture_address: floor3Title,),
                     FloorContent(floorGoodsList:floor3),
+                    HotGoods(),
                   ],
                   )
                 );
