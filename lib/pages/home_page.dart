@@ -9,12 +9,18 @@ import 'widget/Recommend.dart';
 import 'widget/FloorTitle.dart';
 import 'widget/FloorContent.dart';
 import 'widget/HotGoods.dart';
+import 'package:flutter_easyrefresh/easy_refresh.dart';
 
 class HomePage extends StatefulWidget{
   _HomePageState createState() => _HomePageState();
 }
 class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
   String homePageContent ='正在获取数据';
+
+  int page = 1;
+  List<Map> hotGoodsList=[];
+  GlobalKey<RefreshFooterState> _footerKey = new GlobalKey<RefreshFooterState>();
+
 
   @override
   bool get wantKeepAlive => true;
@@ -23,7 +29,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
   void initState() {
     // TODO: implement initState
     super.initState();
-    print('1111111');
+//    _getHotGoods();
   }
 
   @override
@@ -50,23 +56,46 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
                 List<Map> floor2 = (data['data']['floor2'] as List).cast();
                 List<Map> floor3 = (data['data']['floor3'] as List).cast();
 
-                return SingleChildScrollView(
-                    child:Column(
-                  children: <Widget>[
-                    SwiperDiy(swiperDateList: swiper),
-                    TopNavigator(navigatorList:navigatorList),
-                    AdBanner(adPicture: adPicture),
-                    LeaderPhone(leaderImage: leaderImage,leaderPhone:leaderPhone),
-                    Recommend(recommendList:recommendList),
-                    FloorTitle(picture_address: floor1Title,),
-                    FloorContent(floorGoodsList:floor1),
-                    FloorTitle(picture_address: floor2Title,),
-                    FloorContent(floorGoodsList:floor2),
-                    FloorTitle(picture_address: floor3Title,),
-                    FloorContent(floorGoodsList:floor3),
-                    HotGoods(),
+                return EasyRefresh(
+                    refreshFooter: ClassicsFooter(
+                      key: _footerKey,
+                      bgColor: Colors.white,
+                      textColor: Colors.pink,
+                      moreInfoColor: Colors.pink,
+                      showMore: true,
+                      noMoreText: '',
+                      moreInfo: '加载中',
+                      loadedText: '上拉加载',
+                    ),
+                    child:ListView(
+                    children: <Widget>[
+                      SwiperDiy(swiperDateList: swiper),
+                      TopNavigator(navigatorList:navigatorList),
+                      AdBanner(adPicture: adPicture),
+                      LeaderPhone(leaderImage: leaderImage,leaderPhone:leaderPhone),
+                      Recommend(recommendList:recommendList),
+                      FloorTitle(picture_address: floor1Title,),
+                      FloorContent(floorGoodsList:floor1),
+                      FloorTitle(picture_address: floor2Title,),
+                      FloorContent(floorGoodsList:floor2),
+                      FloorTitle(picture_address: floor3Title,),
+                      FloorContent(floorGoodsList:floor3),
+                      _hotGoods(),
+//                      HotGoods(),
                   ],
-                  )
+                  ),
+                  loadMore: ()async{
+                    print('开始加载更多00---');
+                    var formPage = {'page':page};
+                    await request('homePageBelowConten',formData: formPage).then((val){
+                      var data = json.decode(val.toString());
+                      List<Map> newGoodsList = (data['data'] as List).cast();
+                      setState(() {
+                        hotGoodsList.addAll(newGoodsList);
+                        page++;
+                      });
+                    });
+                  },
                 );
               }else{
                 return Center(
@@ -77,6 +106,75 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
     );
   }
 
+  void _getHotGoods(){
+    var formPage = {'page':page};
+    request('homePageBelowConten',formData: formPage).then((val){
+      var data = json.decode(val.toString());
+      List<Map> newGoodsList = (data['data'] as List).cast();
+      setState(() {
+        hotGoodsList.addAll(newGoodsList);
+        page++;
+      });
+    });
+  }
+  //标题
+  Widget hotTitle = Container(
+    margin: EdgeInsets.only(top:10.0),
+    alignment: Alignment.center,
+    color: Colors.transparent,
+    child: Text('火爆专区'),
+  );
+
+  Widget _wrapList(){
+    if(hotGoodsList.length != 0){
+      List<Widget> listWidget = hotGoodsList.map((val){
+        return InkWell(
+          onTap: (){},
+          child: Container(
+            width: ScreenUtil().setWidth(352),
+            color: Colors.white,
+            padding: EdgeInsets.all(5.0),
+            margin: EdgeInsets.only(bottom: 3.0),
+            child: Column(
+              children: <Widget>[
+                Image.network(val['image'],width: ScreenUtil().setWidth(352),),
+                Text(
+                  val['name'],
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(color: Colors.pink,fontSize: ScreenUtil().setSp(26)),
+                ),
+                Row(
+                  children: <Widget>[
+                    Text('￥${val['mallPrice']}'),
+                    Text('￥${val['price']}',style: TextStyle(color: Colors.black26,decoration:TextDecoration.lineThrough))
+                  ],
+                )
+              ],
+            ),
+          ),
+        );
+      }).toList();
+
+      return Wrap(
+        spacing: 2,
+        children: listWidget,
+      );
+    }else{
+      return Text('');
+    }
+  }
+
+  Widget _hotGoods(){
+    return Container(
+      child: Column(
+        children: <Widget>[
+          hotTitle,
+          _wrapList()
+        ],
+      ),
+    );
+  }
 
 }
 //首页轮播组件
@@ -137,4 +235,6 @@ class TopNavigator extends StatelessWidget {
       )
     );
   }
+
+
 }
