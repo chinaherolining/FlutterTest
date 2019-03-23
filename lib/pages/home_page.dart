@@ -32,7 +32,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
     return Scaffold(
       appBar: AppBar(title:Text('百姓生活+')),
       body:FutureBuilder(
-            future: request('homePageContent', formData),
+            future: request('homePageContent', formData:formData),
             builder: (context,snapshot){
               if(snapshot.hasData){
                 //处理数据
