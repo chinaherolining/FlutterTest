@@ -5,8 +5,10 @@ import '../model/category.dart';
 class ChildCategory with ChangeNotifier{
   List<BxMallSubDto> childCategroyList = [];
   int childIndex = 0;//子类高亮索引
+  String categoryId = '4';//大类ID
   //大类切换
-  getChildCategory(List<BxMallSubDto> list){
+  getChildCategory(List<BxMallSubDto> list,String id){
+    categoryId = id;
     childIndex = 0;
     BxMallSubDto all = new BxMallSubDto();
     all.mallSubId = '00';
