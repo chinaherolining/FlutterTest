@@ -122,7 +122,7 @@ class _LeftCatgegoryNavState extends State<LeftCatgegoryNav> {
     });
   }
 }
-
+//小类右侧导航
 class RightCategoryNav extends StatefulWidget {
   @override
   _RightCategoryNavState createState() => _RightCategoryNavState();
@@ -148,7 +148,7 @@ class _RightCategoryNavState extends State<RightCategoryNav> {
               scrollDirection: Axis.horizontal,
               itemCount: childCategory.childCategroyList.length,
               itemBuilder: (context,index){
-                return _rightInkWell(childCategory.childCategroyList[index]);
+                return _rightInkWell(index,childCategory.childCategroyList[index]);
               }),
         );
       },
@@ -156,16 +156,20 @@ class _RightCategoryNavState extends State<RightCategoryNav> {
 
   }
 
-  Widget _rightInkWell(BxMallSubDto item){
+  Widget _rightInkWell(int index,BxMallSubDto item){
+    bool isClick = false;
+    isClick = (index==Provide.value<ChildCategory>(context).childIndex)?true:false;
     return InkWell(
       onTap: (){
-
+        Provide.value<ChildCategory>(context).changeChildIndex(index);
       },
       child: Container(
         padding: EdgeInsets.fromLTRB(5.0, 10.0, 5.0, 10.0),
         child: Text(
           item.mallSubName,
-          style: TextStyle(fontSize: ScreenUtil().setSp(28)),
+          style: TextStyle(
+              fontSize: ScreenUtil().setSp(28),
+              color: isClick?Colors.pink:Colors.black),
         ),
       ),
     );
@@ -189,15 +193,18 @@ class _CategoryGoodsListState extends State<CategoryGoodsList> {
   Widget build(BuildContext context) {
     return Provide<CategoryGoodsListProvide>(
       builder: (context,child,data){
-        return Container(
-          width: ScreenUtil().setWidth(540),
-          height: ScreenUtil().setHeight(855),
-          child: ListView.builder(
-              itemCount: data.goodsList.length,
-              itemBuilder: (context,index){
-                return _ListItemWidget(data.goodsList,index);
-              }),
+        return Expanded(
+          child: Container(
+            width: ScreenUtil().setWidth(540),
+            child: ListView.builder(
+                itemCount: data.goodsList.length,
+                itemBuilder: (context,index){
+                  return _ListItemWidget(data.goodsList,index);
+                }),
+          ),
         );
+
+
       },
     );
 
