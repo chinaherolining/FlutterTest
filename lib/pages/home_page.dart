@@ -10,6 +10,7 @@ import 'widget/FloorTitle.dart';
 import 'widget/FloorContent.dart';
 import 'widget/HotGoods.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
+import '../routers/application.dart';
 
 class HomePage extends StatefulWidget{
   _HomePageState createState() => _HomePageState();
@@ -129,7 +130,9 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
     if(hotGoodsList.length != 0){
       List<Widget> listWidget = hotGoodsList.map((val){
         return InkWell(
-          onTap: (){},
+          onTap: (){
+            Application.router.navigateTo(context, "/detail?id=${val['goodsId']}");
+          },
           child: Container(
             width: ScreenUtil().setWidth(352),
             color: Colors.white,
