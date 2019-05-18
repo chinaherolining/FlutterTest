@@ -197,7 +197,13 @@ class SwiperDiy extends StatelessWidget {
       width: ScreenUtil().setWidth(720),
       child: Swiper(
         itemBuilder: (BuildContext context,int index){
-          return Image.network("${swiperDateList[index]['image']}");
+          return InkWell(
+            onTap: (){
+              Application.router.navigateTo(context, "/detail?id=${swiperDateList[index]['goodsId']}");
+            },
+            child: Image.network("${swiperDateList[index]['image']}"),
+          );
+
         },
         itemCount: 3,
         pagination: SwiperPagination(),

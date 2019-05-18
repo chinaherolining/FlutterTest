@@ -1,38 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../routers/application.dart';
 //楼层商品列表
 class FloorContent extends StatelessWidget {
   final List floorGoodsList ;//商品列表
 
   FloorContent({Key key,this.floorGoodsList}):super(key:key);
-  Widget _goodsItem(Map goods){
+  Widget _goodsItem(BuildContext context,Map goods){
     return Container(
       width: ScreenUtil().setWidth(352),
       child: InkWell(
-        onTap: (){print('点击了楼层商品');},
+        onTap: (){
+          Application.router.navigateTo(context, "/detail?id=${goods['goodsId']}");
+          print('点击了楼层商品');
+          },
         child:Image.network(goods['image']),
       ),
     );
   }
-  Widget _firstRow(){
+  Widget _firstRow(BuildContext context){
     return Row(
       children: <Widget>[
-        _goodsItem(floorGoodsList[0]),
+        _goodsItem(context,floorGoodsList[0]),
         Column(
           children: <Widget>[
-            _goodsItem(floorGoodsList[1]),
-            _goodsItem(floorGoodsList[2]),
+            _goodsItem(context,floorGoodsList[1]),
+            _goodsItem(context,floorGoodsList[2]),
           ],
         )
       ],
     );
   }
-  Widget _otherRow(){
+  Widget _otherRow(BuildContext context){
     return Row(
       children: <Widget>[
-        _goodsItem(floorGoodsList[3]),
-        _goodsItem(floorGoodsList[4])
+        _goodsItem(context,floorGoodsList[3]),
+        _goodsItem(context,floorGoodsList[4])
       ],
     );
   }
@@ -42,8 +46,8 @@ class FloorContent extends StatelessWidget {
     return Container(
       child: Column(
           children: <Widget>[
-            _firstRow(),
-            _otherRow()
+            _firstRow(context),
+            _otherRow(context)
           ],
       ),
     );
