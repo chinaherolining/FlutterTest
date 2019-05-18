@@ -9,9 +9,25 @@ class DetailsWeb extends StatelessWidget {
   Widget build(BuildContext context) {
     var goodesDetails = Provide.value<DetailsInfoProvide>(context).goodsInfo.data.goodInfo.goodsDetail;
 
-    return Container(
-      child: Html(
-          data: goodesDetails),
+    return Provide<DetailsInfoProvide>(
+      builder: (context,child,val){
+        var isLeft = Provide.value<DetailsInfoProvide>(context).isLeft;
+        if(isLeft){
+          return Container(
+            child: Html(
+                data: goodesDetails),
+          );
+        }else{
+          return Container(
+            width: ScreenUtil().setWidth(700),
+            padding: EdgeInsets.all(10.0),
+            alignment: Alignment.center,
+            child: Text('暂时没有数据'),
+          );
+        }
+      },
     );
+
+
   }
 }
