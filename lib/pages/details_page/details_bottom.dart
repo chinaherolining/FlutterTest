@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provide/provide.dart';
 import '../../provide/cart.dart';
 import '../../provide/details_info.dart';
+import '../../provide/currentIndex.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class DetailsBottom extends StatelessWidget {
@@ -20,7 +21,10 @@ class DetailsBottom extends StatelessWidget {
       child: Row(
         children: <Widget>[
           InkWell(
-            onTap: (){},
+            onTap: (){
+              Provide.value<CurrentIndexProvide>(context).changeIndex(2);
+              Navigator.pop(context);
+            },
             child: Container(
               width: ScreenUtil().setWidth(120),
               height: ScreenUtil().setHeight(80),
